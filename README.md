@@ -1,4 +1,7 @@
 # Personalized blog & profile
+[![GitHub version](https://badge.fury.io/gh/jraymaekers%2Fjraymaekers.github.io.svg)](https://badge.fury.io/gh/jraymaekers%2Fjraymaekers.github.io)
+[![Build Status](https://travis-ci.com/jraymaekers/jraymaekers.github.io.svg?branch=master)](https://travis-ci.com/jraymaekers/jraymaekers.github.io/)
+[![Gem Version](https://badge.fury.io/rb/jekyll.svg)](https://badge.fury.io/rb/jekyll)
 
 [![GitHub PageSpeed](https://api.speedbadge.io/v1?url=https://www.raymaekers.xyz&showStratLabel=true&strat=mobile)](https://developers.google.com/speed/pagespeed/insights/?url=www.raymaekers.xyz&tab=mobile)
 [![GitHub PageSpeed](https://api.speedbadge.io/v1?url=https://www.raymaekers.xyz&showStratLabel=true&strat=desktop)](https://developers.google.com/speed/pagespeed/insights/?url=www.raymaekers.xyz&tab=desktop)
