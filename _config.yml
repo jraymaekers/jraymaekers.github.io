@@ -1,4 +1,9 @@
+# Site settings
 title: Raymaekers Blog
 description: Blog and Personal profile pages.
 theme: jekyll-theme-hacker
 show_downloads: false
+
+# Footer
+footer_left: "Made with <i class=\"fa fa-heart\"></i> by Jochen"
+footer_right: "&lt;/&gt; on <a href=\"https://github.com/jraymaekers/">Github</a> &nbsp;<i class=\"fa fa-github-alt\"></i>"
