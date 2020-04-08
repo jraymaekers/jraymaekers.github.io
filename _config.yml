@@ -13,13 +13,13 @@ post_limit: 5
 
 # Social usernames/URLs
 twitter_username: 
-github_username: 
-instagram_username: 
+github_username: jraymaekers
+instagram_username: iam_edition_one
 reddit_username: 
 linkedin_link: https://www.raymaekers.xyz/
 google_plus_link: https://www.raymaekers.xyz/
 stackoverflow_link: https://www.raymaekers.xyz/
-facebook_link:
+facebook_link: https://www.raymaekers.xyz/
 
 # Footer
 footer_left: "Made with <i class=\"fa fa-heart\"></i> by <a href=\"https://www.raymaekers.xyz/\">J. Raymaekers</a>"
