@@ -27,4 +27,12 @@ stackoverflow_link: https://jochen.raymaekers.xyz/
 footer_left: "Made with <i class=\"fa fa-heart\"></i> by Jochen"
 footer_right: "&lt;/&gt; on <a href=\"https://github.com/jraymaekers/">Github</a> &nbsp;<i class=\"fa fa-github-alt\"></i>"
 
+# Build settings
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
 permalink: pretty
+exclude: [vendor]
