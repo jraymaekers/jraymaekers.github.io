@@ -4,6 +4,27 @@ description: Blog and Personal profile pages.
 theme: jekyll-theme-hacker
 show_downloads: false
 
+baseurl: ""
+url: "https://jochen.raymaekers.xyz/"
+title_description: "A personal blog based on Jekyll focusing on a clear reading experience.
+title_image: "https://www.gravatar.com/avatar/00000000000000000000000000000000?s=500&d=mm"
+google_analytics:
+disqus_account: 
+github_repository: https://github.com/jraymaekers
+addthis_id: 
+post_limit: 5
+
+# Social usernames/URLs
+twitter_username:
+github_username: jraymaekers
+instagram_username:
+facebook_link:
+reddit_username:
+linkedin_link: https://jochen.raymaekers.xyz/
+stackoverflow_link: https://jochen.raymaekers.xyz/
+
 # Footer
 footer_left: "Made with <i class=\"fa fa-heart\"></i> by Jochen"
 footer_right: "&lt;/&gt; on <a href=\"https://github.com/jraymaekers/">Github</a> &nbsp;<i class=\"fa fa-github-alt\"></i>"
+
+permalink: pretty
