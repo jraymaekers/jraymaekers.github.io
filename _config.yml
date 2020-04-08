@@ -3,18 +3,18 @@ baseurl: ""
 url: "https://jochen.raymaekers.xyz/"
 title_description: "A personal blog based on Jekyll focusing on a clear reading experience.
 title_image: "https://www.gravatar.com/avatar/00000000000000000000000000000000?s=500&d=mm"
-google_analytics:
+google_analytics: 
 disqus_account: 
 github_repository: https://github.com/jraymaekers
 addthis_id: 
 post_limit: 5
 
 # Social usernames/URLs
-twitter_username:
+twitter_username: 
 github_username: jraymaekers
-instagram_username:
-facebook_link:
-reddit_username:
+instagram_username: 
+facebook_link: 
+reddit_username: 
 linkedin_link: https://jochen.raymaekers.xyz/
 stackoverflow_link: https://jochen.raymaekers.xyz/
 
