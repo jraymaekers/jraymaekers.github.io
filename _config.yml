@@ -3,18 +3,18 @@ title: "Raymaekers Blog"
 description: "Personal blog and Articles"
 baseurl: ""
 url: "https://jochen.raymaekers.xyz/"
-title_description: "A personal blog based on Jekyll focusing on a clear reading experience.
-github_repository: https://github.com/jraymaekers
+title_description: "A personal blog based on Jekyll focusing on a clear reading experience."
+github_repository: "https://github.com/jraymaekers"
 
 # Social usernames/URLs
 
-github_username: jraymaekers
-linkedin_link: https://jochen.raymaekers.xyz/
-stackoverflow_link: https://jochen.raymaekers.xyz/
+github_username: "jraymaekers"
+linkedin_link: "https://jochen.raymaekers.xyz/"
+stackoverflow_link: "https://jochen.raymaekers.xyz/"
 
 # Footer
-footer_left: Made by Jochen
-footer_right: On Github
+footer_left: "Made by Jochen"
+footer_right: "On Github"
 
 # Build settings
 markdown: kramdown
