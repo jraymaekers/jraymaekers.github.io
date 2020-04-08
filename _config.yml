@@ -1,20 +1,29 @@
 # Site settings
 title: "Raymaekers Blog"
-description: "Personal blog and Articles"
+email: jochen@raymaekers.xyz
+description: "A blog and article website using themes on Jekyll."
 baseurl: ""
-url: "https://jochen.raymaekers.xyz/"
+url: "https://www.raymaekers.xyz/"
 title_description: "A personal blog based on Jekyll focusing on a clear reading experience."
-github_repository: "https://github.com/jraymaekers"
+title_image: "https://www.gravatar.com/avatar/00000000000000000000000000000000?s=500&d=mm"
+google_analytics: "UA-163095387-1"
+github_repository: https://github.com/jraymaekers
+addthis_id: ra-5e8db54d5c0d7237
+post_limit: 5
 
 # Social usernames/URLs
-
-github_username: "jraymaekers"
-linkedin_link: "https://jochen.raymaekers.xyz/"
-stackoverflow_link: "https://jochen.raymaekers.xyz/"
+twitter_username: 
+github_username: 
+instagram_username: 
+reddit_username: 
+linkedin_link: https://www.raymaekers.xyz/
+google_plus_link: https://www.raymaekers.xyz/
+stackoverflow_link: https://www.raymaekers.xyz/
+facebook_link:
 
 # Footer
-footer_left: "Made by Jochen"
-footer_right: "On Github"
+footer_left: "Made with <i class=\"fa fa-heart\"></i> by <a href=\"https://www.raymaekers.xyz/\">J. Raymaekers</a>"
+footer_right: "&lt;/&gt; on <a href=\"https://github.com/jraymaekers/\">Github</a> &nbsp;<i class=\"fa fa-github-alt\"></i>"
 
 # Build settings
 markdown: kramdown
