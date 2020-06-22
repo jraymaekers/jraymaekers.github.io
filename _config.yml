@@ -5,7 +5,7 @@ description: "A blog and article website using themes on Jekyll."
 baseurl: ""
 url: "https://www.raymaekers.xyz/"
 title_description: "A personal blog based on Jekyll focusing on a clear reading experience."
-title_image: "https://www.gravatar.com/avatar/00000000000000000000000000000000?s=500&d=mm"
+title_image: "https://www.gravatar.com/avatar/1295b457e85520e32c96cb494d3aed9d?s=500&d=mm"
 google_analytics: "UA-163095387-1"
 github_repository: https://github.com/jraymaekers
 addthis_id: ra-5e8db54d5c0d7237
