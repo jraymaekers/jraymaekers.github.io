@@ -1,4 +1,4 @@
-<pre class="font-mono whitespace-pre-wrap leading-relaxed">{{ range first 5 (sort site.RegularPages "Date" "desc") }}- <a href="{{ .RelPermalink }}" class="hover:underline"><span class="font-bold text-accent-emerald">{{ .Title }}</span></a>
+<pre class="font-mono whitespace-pre-wrap leading-relaxed">{{ range first 5 (sort (where site.RegularPages "Section" "posts") "Date" "desc") }}- <a href="{{ .RelPermalink }}" class="hover:underline"><span class="font-bold text-accent-emerald">{{ .Title }}</span></a>
 <span class="text-sm nerdy-muted-soft">{{ .Date.Format "2006-01-02" }}</span>
 <span class="text-accent-amber"></span> {{ .Params.summary }}
 {{ end }}</pre>
