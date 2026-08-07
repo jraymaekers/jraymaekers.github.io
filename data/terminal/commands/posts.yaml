@@ -1,0 +1,5 @@
+name: post
+label: Posts
+description: All my blog posts
+quick: true
+weight: 40
