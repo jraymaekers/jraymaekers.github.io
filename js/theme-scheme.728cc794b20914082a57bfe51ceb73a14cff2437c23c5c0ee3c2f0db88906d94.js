@@ -1,0 +1,1 @@
+(()=>{(()=>{let t=document.documentElement,e=null;try{e=localStorage.getItem("theme")}catch{}let r=window.matchMedia?.("(prefers-color-scheme: dark)").matches??!1,o=e?e==="dark":r;t.classList.toggle("dark",o),t.style.colorScheme=o?"dark":"light"})();})();
