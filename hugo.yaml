@@ -1,0 +1,35 @@
+baseURL: "https://www.raymaekers.xyz/"
+locale: en-us
+title: Raymaekers
+disableKinds:
+  - taxonomy
+  - term
+markup:
+  tableOfContents:
+    startLevel: 2
+    endLevel: 3
+  goldmark:
+    renderer:
+      # Keep raw HTML disabled by default so copied demo config is safe for public sites.
+      unsafe: false
+build:
+  buildStats:
+    enable: true
+  cachebusters:
+    - source: 'assets/notwatching/hugo_stats\.json'
+      target: css
+    - source: '(postcss|tailwind)\.config\.(js|mjs|ts)'
+      target: css
+module:
+  # Resolve the theme import to this repository's parent theme checkout.
+  imports:
+    - path: github.com/hugo-themes/nerdy
+  mounts:
+    - source: content
+      target: content
+    - source: data
+      target: data
+    - disableWatch: true
+      source: hugo_stats.json
+      target: assets/notwatching/hugo_stats.json
+
