@@ -25,6 +25,12 @@ This post walks through a data-driven consent architecture built on PingOne Adva
 
 **What You See Is What You Accept.** The name captures the core guarantee: the text rendered on screen and the text stored in the database are the same object, not copies that can diverge. The `content` field in `policyVersion` *is* what the user sees — the AM script reads it from IDM and pushes it directly to the browser callback. There is no intermediate template file to drift.
 
+
+## See it in action
+<video controls preload="metadata" width="100%">
+  <source src="PingOne Advanced Identity Cloud_Consent.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 ---
 
 ## The IDM Data Model

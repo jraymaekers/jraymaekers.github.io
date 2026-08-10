@@ -11,7 +11,7 @@ markup:
   goldmark:
     renderer:
       # Keep raw HTML disabled by default so copied demo config is safe for public sites.
-      unsafe: false
+      unsafe: true
 build:
   buildStats:
     enable: true
