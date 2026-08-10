@@ -346,7 +346,7 @@ Start
                       └─ Check Existing Consent [ScriptedDecisionNode]
                            ├─ alreadyAccepted ──→ Update Last Login ──→ Success
                            └─ needsConsent
-                                └─ Show Dyna consent content [ScriptedDecisionNode]
+                                └─ Show Dynamic consent content [ScriptedDecisionNode]
                                      ├─ true (Accept)
                                      │    └─ Process and Record Consent [ScriptedDecisionNode]
                                      │         ├─ accept ──→ Update Last Login ──→ Success
@@ -358,32 +358,7 @@ Start
                                                     └─ Reject ──→ Access DENIED [User Message] ──→ Failure
 ```
 
-```mermaid
-graph LR
-    Start((Start)) --> PageNode["Sign In Page<br/>(Username/Password)"]
-    PageNode --> AuthCheck{Credentials Valid?}
-    
-    AuthCheck -- No --> RetryLogic{Retry Limit?}
-    RetryLogic -- Limit Reached --> Lockout[Account Lockout]
-    RetryLogic -- Retry --> PageNode
-    
-    AuthCheck -- Yes --> IncCount[Increment Login Count]
-    IncCount --> IDUser[Identify Existing User]
-    IDUser --> CheckConsent{"Check Consent"}
-    
-    CheckConsent -- alreadyAccepted --> UpdateLogin[Update Last Login]
-    UpdateLogin --> Success((Success))
-    
-    CheckConsent -- needsConsent --> ShowConsent["Show Dynamic Consent content"]
-    
-    ShowConsent -- Decline --> DeniedPage[Page: Access Denied]
-    DeniedPage --> Failure((Failure))
-    
-    ShowConsent -- Accept --> ProcessConsent["Process & Record"]
-    ProcessConsent --> UpdateLogin
-```
-
-**Notable configuration details from the export:**
+**Notable configuration details:**
 
 - Login retry limit: `retryLimit: 5`. Five attempts before `AccountLockoutNode` fires.
 - Consent decline retry limit: `retryLimit: 3`. Three declines before hard denial. This is configurable per deployment.
