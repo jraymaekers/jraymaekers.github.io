@@ -1,0 +1,19 @@
+{
+  "name": "raymaekers",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+ "scripts": {
+    "build": "npx --package=tailwindcss hugo --renderToMemory && npx --package=tailwindcss hugo --minify --gc --cleanDestinationDir",
+    "server": "npx --package=tailwindcss hugo --renderToMemory && npx --package=tailwindcss hugo server --buildDrafts --watch",
+    "dev": "npm run server",
+    "theme:update": "hugo mod get github.com/hugo-themes/nerdy@latest && hugo mod tidy && hugo mod npm pack && npm install",
+    "theme:update-to-main": "hugo mod get github.com/hugo-themes/nerdy@main && hugo mod tidy && hugo mod npm pack && npm install"
+  },
+  "workspaces": [
+    "packages/hugoautogen"
+  ],
+  "devDependencies": {
+    "tailwindcss": "^4.3.3"
+  }
+}
