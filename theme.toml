@@ -1,0 +1,30 @@
+name = "Nerdy"
+license = "MIT"
+licenselink = "https://github.com/hugo-themes/nerdy/blob/main/LICENSE"
+description = "A nerd vibed personal portfolio theme."
+homepage = "https://github.com/hugo-themes/nerdy"
+demosite = "https://nerdy.hugo-themes.com/"
+tags = [
+  "blog",
+  "personal",
+  "portfolio",
+  "tailwindcss",
+  "alpinejs",
+  "responsive",
+  "dark-mode",
+]
+features = [
+  "interactive-terminal",
+  "featured-projects",
+  "recent-posts",
+  "activity-log",
+  "posts",
+  "post-series",
+  "dark-mode",
+  "responsive",
+]
+min_version = "0.162.1"
+
+[author]
+name = "Emruz Hossain"
+homepage = "https://hossainemruz.dev/"

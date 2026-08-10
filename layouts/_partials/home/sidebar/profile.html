@@ -1,0 +1,49 @@
+<section class="nerdy-sidebar-card">
+  <div class="mb-6 flex items-center gap-4">
+    <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-slate-300/80 bg-slate-100/90 dark:border-slate-600 dark:bg-slate-900/70">
+      {{- with .avatar }}
+        {{- $avatarURL := . -}}
+        {{- $avatarWidth := 64 -}}
+        {{- $avatarHeight := 64 -}}
+        {{- if not (hasPrefix . "http") }}
+          {{- $avatarURL = . | relURL }}
+          {{- with resources.Get . -}}
+            {{- $avatarURL = .RelPermalink -}}
+            {{- $avatarWidth = .Width -}}
+            {{- $avatarHeight = .Height -}}
+          {{- end }}
+        {{- end }}
+        <img class="h-full w-full object-cover" src="{{ $avatarURL }}" alt="{{ $.name | default "Profile avatar" }}" width="{{ $avatarWidth }}" height="{{ $avatarHeight }}" loading="eager" decoding="async" fetchpriority="high">
+      {{- else }}
+        <span class="font-mono text-2xl text-accent-cyan">{}</span>
+      {{- end }}
+    </div>
+    <div>
+      <h1 class="text-xl font-bold tracking-tight text-slate-950 dark:text-white">{{ .name }}</h1>
+      <p class="mt-1 font-mono text-sm text-accent-cyan">{{ .title }}</p>
+    </div>
+  </div>
+
+  {{ with .description }}<p class="mb-6 text-sm leading-relaxed nerdy-muted">{{ . }}</p>{{ end }}
+
+  {{ with .status }}
+    <div class="mb-6 flex flex-col gap-2 rounded-lg border border-slate-300/70 bg-slate-50/95 p-4 font-mono text-xs shadow-inner dark:border-slate-700 dark:bg-slate-900/45">
+      <div class="flex items-center gap-3">
+        <span class="h-2 w-2 animate-pulse rounded-full bg-accent-emerald shadow-[0_0_10px_rgba(16,185,129,0.75)]"></span>
+        <span class="text-slate-800 dark:text-slate-300">{{ .label }}: <span class="font-bold text-slate-950 dark:text-white">{{ .value }}</span></span>
+      </div>
+      <div class="pl-5 nerdy-muted">└─ {{ .preference_label }}: <span class="text-accent-cyan">{{ .preference }}</span></div>
+    </div>
+  {{ end }}
+
+  {{ with .links }}
+    <div class="flex flex-col gap-3">
+      {{ range . }}
+        <a class="group flex items-center gap-3 text-sm nerdy-muted transition-colors hover:text-slate-950 dark:hover:text-white" href="{{ .url }}" {{ if hasPrefix .url "http" }}target="_blank" rel="noopener noreferrer"{{ end }}>
+          <span class="transition-colors group-hover:text-accent-cyan">{{ partial "components/icon.html" (dict "name" .icon "class" "h-5 w-5") }}</span>
+          {{ .label }}
+        </a>
+      {{ end }}
+    </div>
+  {{ end }}
+</section>

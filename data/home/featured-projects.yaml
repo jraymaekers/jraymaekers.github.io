@@ -1,0 +1,39 @@
+id: featured-projects
+type: projects
+icon: code
+title: Featured Projects
+items:
+  - title: Nexus API Gateway
+    role: Technical lead
+    description: A high-performance API gateway built in Go, capable of handling
+      50k+ req/sec with dynamic routing, rate limiting, and real-time
+      observability.
+    tech:
+      - Go
+      - Redis
+      - Docker
+    accent: purple
+    type: Work
+    stars: 2.4k
+    links:
+      - label: Code
+        url: https://github.com/gopher/nexus-api-gateway
+        icon: github
+      - label: Live Demo
+        url: https://demo.example.com/nexus-api-gateway
+        icon: external
+  - title: NetOps CLI
+    role: Creator & maintainer
+    description: A terminal-based toolkit written in Rust for diagnosing network
+      latencies and container orchestration bottlenecks.
+    tech:
+      - Rust
+      - Tokio
+      - Docker
+    accent: cyan
+    type: Personal
+    stars: 890
+    links:
+      - label: Code
+        url: https://github.com/gopher/netops-cli
+        icon: github

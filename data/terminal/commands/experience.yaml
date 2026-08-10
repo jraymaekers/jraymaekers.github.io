@@ -1,0 +1,32 @@
+name: experience
+label: Experience
+description: Professional work history
+quick: true
+weight: 30
+roles:
+  - title: Senior Principal Solution Architect
+    company: Ping Identity 
+    period: Jan 2024 - Present
+    highlights:
+      - Do magic x 2
+  - title: Principal Solution Architect
+    company: ForgeRock
+    period: Mar 2020 - Jan 2024
+    highlights:
+      - Do magic
+  - title: Co-Organising
+    company: BruCON
+    period: Oct 2024 - Present
+    highlights:
+      - Do cyber magic
+  - title: Senior Security Consultant & Teamlead
+    company: Toreon
+    period: Nov 2018 - Mar 2020
+    highlights:
+      - Cyber Security
+  - title: Security Consultant
+    company: IS4U
+    period: Jul 2013 - Nov 2018
+    highlights:
+      - Cyber Security
+      - Identity & Access Management

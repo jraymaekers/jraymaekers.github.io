@@ -1,0 +1,70 @@
+profile:
+  name: "Mr. Raymaekers"
+  title: Sr. Principal Solution Architect
+  avatar: "images/jr.png"
+  description: Building scalable IAM systems. Obsessed with clean code and modern web
+    architectures.
+  status:
+    label: Status
+    value: Senior Principal Solution Architect at Ping Identity
+    preference_label: Focus
+    preference: Helping organizations build scalable IAM systems with a focus on clean code and modern web architectures.
+  links:
+    - icon: website
+      label: www.raymaekers.xyz
+      url: https://jochen.raymaekers.xyz
+    - icon: github
+      label: github.com/jraymaekers
+      url: https://github.com/jraymaekers
+    - icon: linkedin
+      label: linkedin.com/in/jochenraymaekers
+      url: https://linkedin.com/in/jochenraymaekers
+    - icon: mail
+      label: jochen.raymaekers@
+      url: mailto:jochen.raymaekers@pingidentity.com
+
+sections:
+  - id: profile-stats
+    type: stats
+    title: Profile Stats
+    items:
+      - label: Experience
+        value: 13+ yrs
+        accent: emerald
+      - label: Current Focus
+        value: Identity and Access Management
+        accent: cyan
+      - label: Main Language
+        value: Sarcasm
+        accent: amber
+      - label: Background
+        value: Cyber Security
+        accent: purple
+  - id: core-stack
+    type: tags
+    title: Specializations
+    items:
+      - IAM
+      - ForgeRock | Ping Identity 
+
+  - id: Production Experience
+    type: tags
+    title: Production Experience
+    items:
+      - Go
+      - Docker
+      - Kubernetes
+      - Javascript
+      - Python
+      - GCP
+      - AWS
+      - Ansible
+      - Terraform
+  - id: Additional Experience
+    type: tags
+    title: Additional Experience
+    items:
+    - AKS
+    - Red Teaming
+    - Cybersecurity things
+    

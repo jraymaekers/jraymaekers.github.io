@@ -1,0 +1,101 @@
+{{ $terminalData := hugo.Data.terminal | default dict }}
+{{ $config := index $terminalData "config" | default dict }}
+{{ $terminalConfig := dict
+  "user" ($config.user | default "visitor")
+  "host" ($config.host | default "MacBook-Pro")
+  "directory" ($config.directory | default "~")
+  "autoCommand" ($config.auto_command | default "help")
+}}
+
+<div class="relative font-mono text-sm text-slate-900 dark:text-slate-100">
+  <div class="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-br from-accent-cyan/10 via-indigo-300/8 to-fuchsia-300/8 blur-2xl dark:from-accent-cyan/20 dark:via-indigo-500/10 dark:to-fuchsia-500/15"></div>
+  <div
+    class="flex w-full flex-col overflow-hidden rounded-2xl border border-slate-300/90 bg-white/95 shadow-2xl shadow-slate-300/30 ring-1 ring-slate-900/10 backdrop-blur-md transition-all duration-200 dark:border-slate-700/80 dark:bg-slate-950/95 dark:shadow-black/30 dark:ring-black/50"
+    x-bind:class="isFullscreen ? 'fixed inset-3 z-[60] h-auto min-h-0 max-h-none !w-auto sm:inset-6' : 'relative z-10 h-[540px] min-h-[540px] max-h-[540px]'"
+    x-data='terminalPortfolio({{ $terminalConfig | jsonify }})'
+    x-on:theme-changed.window="recordThemeChange($event.detail.dark)"
+    x-on:keydown.escape.window="exitFullscreen()"
+    x-on:click="focusInput()"
+    x-cloak
+  >
+    <div class="relative flex h-10 shrink-0 items-center gap-2 border-b border-slate-300/90 bg-slate-100/95 px-4 dark:border-slate-700/80 dark:bg-slate-800">
+      <div class="group/traffic flex items-center gap-2">
+        <div class="h-3.5 w-3.5 rounded-full border border-black/20 bg-[#ff5f56] shadow-sm"></div>
+        <div class="h-3.5 w-3.5 rounded-full border border-black/20 bg-[#ffbd2e] shadow-sm"></div>
+        <button
+          class="group/maximize relative h-3.5 w-3.5 rounded-full border border-black/20 bg-[#27c93f] shadow-sm"
+          type="button"
+          x-bind:title="isFullscreen ? 'Exit fullscreen' : 'Maximize terminal'"
+          x-bind:aria-label="isFullscreen ? 'Exit fullscreen' : 'Maximize terminal'"
+          x-on:click.stop="toggleFullscreen()"
+        >
+          <span class="absolute left-1/2 top-1/2 h-[1.5px] w-1.5 -translate-x-1/2 -translate-y-1/2 rounded bg-transparent transition-colors group-hover/traffic:bg-black/70 group-hover/maximize:bg-black/70"></span>
+          <span class="absolute left-1/2 top-1/2 h-1.5 w-[1.5px] -translate-x-1/2 -translate-y-1/2 rounded bg-transparent transition-colors group-hover/traffic:bg-black/70 group-hover/maximize:bg-black/70" x-show="!isFullscreen"></span>
+        </button>
+      </div>
+      <div class="pointer-events-none absolute inset-x-0 text-center font-sans text-xs font-medium tracking-wide text-slate-600 dark:text-slate-400">
+        {{ $config.window_title | default "guest — -bash — 80x24" }}
+      </div>
+    </div>
+
+    <div class="min-h-0 flex-1 overflow-y-auto scroll-smooth p-4 text-slate-900 dark:text-slate-100 md:p-6" x-ref="container" role="log" aria-live="polite" aria-atomic="false" aria-label="Terminal output">
+      <div class="w-full">
+        <template x-for="(entry, index) in history" :key="index">
+          <div>
+            <div class="mb-1" x-show="entry.type === 'command'">
+              <span class="mr-2 font-bold text-slate-900 dark:text-slate-100">
+                <span x-text="`${prompt.user}@${prompt.host}`"></span>
+                <span class="text-accent-cyan" x-text="prompt.directory"></span>
+                %
+              </span>
+              <span class="text-slate-900 dark:text-slate-100" x-text="entry.command"></span>
+            </div>
+            <div x-show="entry.type === 'output'" x-html="entry.html"></div>
+          </div>
+        </template>
+      </div>
+
+      <div class="relative mt-2 flex cursor-text items-center" x-on:click.stop="focusInput()">
+        <span class="mr-2 font-bold text-slate-900 dark:text-slate-100">
+          <span x-text="`${prompt.user}@${prompt.host}`"></span>
+          <span class="text-accent-cyan" x-text="prompt.directory"></span>
+          %
+        </span>
+        <span class="whitespace-pre text-slate-900 dark:text-slate-100" x-text="input"></span>
+        <span class="ml-0.5 block h-[1.2em] w-2 animate-pulse bg-slate-500 dark:bg-slate-400"></span>
+        <input
+          class="absolute left-0 top-0 h-full w-full cursor-text border-none bg-transparent text-transparent opacity-0 outline-none ring-0"
+          type="text"
+          aria-label="Terminal command input"
+          autocomplete="off"
+          spellcheck="false"
+          x-ref="input"
+          x-model="input"
+          x-on:keydown.enter.prevent="submit()"
+          x-bind:disabled="isProcessing"
+        >
+      </div>
+    </div>
+
+    <div class="hide-scrollbar flex h-12 shrink-0 items-center gap-2 overflow-x-auto whitespace-nowrap border-t border-slate-300/90 bg-slate-100/95 px-4 dark:border-slate-700/80 dark:bg-slate-800/50">
+      <div class="mr-2 hidden select-none font-sans text-[10px] font-bold uppercase tracking-widest text-slate-600 dark:text-slate-500 sm:block">Quick_Cmds:</div>
+      <template x-for="command in quickCommands" :key="command.name">
+        <button
+          class="rounded border border-slate-300 bg-white/80 px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-slate-700 transition-colors hover:border-accent-cyan/40 hover:bg-white hover:text-accent-cyan active:scale-95 dark:border-slate-600 dark:bg-slate-700/50 dark:text-slate-300 dark:hover:bg-slate-600"
+          type="button"
+          x-text="command.label"
+          x-bind:aria-label="`Run terminal command: ${command.label}`"
+          x-on:click.stop="runQuickCommand(command.name)"
+        ></button>
+      </template>
+      <button
+        class="ml-auto rounded bg-transparent px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-slate-600 transition-colors hover:bg-slate-100 hover:text-accent-cyan active:scale-95 dark:text-slate-400 dark:hover:bg-slate-700/50"
+        type="button"
+        aria-label="Clear terminal output"
+        x-on:click.stop="runQuickCommand('clear')"
+      >Clear</button>
+    </div>
+
+    {{ partial "terminal/command-manager.html" (dict "terminal" $terminalData) }}
+  </div>
+</div>

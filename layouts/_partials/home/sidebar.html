@@ -1,0 +1,27 @@
+{{ $sidebar := hugo.Data.sidebar | default dict }}
+{{ if or $sidebar.profile $sidebar.sections }}
+  <aside class="nerdy-sticky-sidebar lg:sticky lg:top-12 lg:col-span-4 lg:h-fit lg:self-start">
+    <div class="flex flex-col gap-6">
+      {{ with $sidebar.profile }}
+        {{ partial "home/sidebar/profile.html" . }}
+      {{ end }}
+
+      {{ range ($sidebar.sections | default slice) }}
+        {{- $rawType := .type | default "" -}}
+        {{- $sectionType := replace ($rawType | lower) "_" "-" -}}
+        {{- $safeType := replaceRE `[^a-z0-9-]` "" $sectionType -}}
+        {{- if or (eq $sectionType "") (ne $sectionType $safeType) -}}
+          {{- errorf "Invalid sidebar section type %q. Use lowercase letters, numbers, hyphens, or underscores." $rawType -}}
+        {{- else -}}
+          {{- $partial := printf "home/sidebar/%s.html" $sectionType -}}
+          {{- $template := printf "_partials/%s" $partial -}}
+          {{- if not (templates.Exists $template) -}}
+            {{- errorf "Unknown sidebar section type %q. Expected partial: layouts/_partials/%s" $rawType $partial -}}
+          {{- else -}}
+            {{ partial $partial . }}
+          {{- end -}}
+        {{- end -}}
+      {{ end }}
+    </div>
+  </aside>
+{{ end }}

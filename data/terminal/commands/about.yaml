@@ -1,0 +1,14 @@
+name: about
+label: About
+description: Information about me
+quick: true
+weight: 10
+greeting: Hi,
+person_name: "Jochen Raymaekers"
+summary: A principal solution architect with +13 years of experience in designing and implementing identity and access management solutions. I specialize in ForgeRock and Ping Identity platforms, with a strong background in cybersecurity, cloud technologies, and DevOps practices.  
+details:
+  - My journey started with a fascination for how things
+    work under the hood and how to bypass them with a different hacker mindset. Today, I work at Ping Identity, where I help organizations build scalable IAM systems with a focus on clean code and modern web architectures.  
+quote:
+  text: First, solve the problem. Then, write the code.
+  author: John Johnson

@@ -1,0 +1,104 @@
+{{ define "main" }}
+  {{ $page := . }}
+  {{ $section := .Section | default "posts" }}
+  {{ $sectionPage := site.GetPage (printf "/%s" $section) }}
+  {{ $sectionPages := partial "posts/utils/weighted-pages.html" (dict "sectionPage" $sectionPage "section" $section) }}
+  {{ $subjects := slice }}
+  {{ with $sectionPage }}
+    {{ $subjects = .Sections.ByWeight }}
+  {{ end }}
+  {{ $subject := "logs" }}
+  {{ $topic := .Params.topic | default (.Title | urlize | replace "-" "_") }}
+  {{ $currentSidebarSubject := "Others" }}
+  {{ $currentSidebarSubjectID := $currentSidebarSubject | urlize }}
+  {{ $currentSidebarTopic := .Params.topic | default "Misc" }}
+  {{ $currentTopicSeriesSections := slice }}
+  {{ $currentTopicPages := slice }}
+  {{ $series := .Params.series | default "" }}
+  {{ $hasFolderSubject := false }}
+  {{ $hasFolderTopic := false }}
+
+  {{ range $subjectPage := $subjects }}
+    {{ if hasPrefix $page.RelPermalink $subjectPage.RelPermalink }}
+      {{ $hasFolderSubject = true }}
+      {{ $subject = $subjectPage.LinkTitle | default $subjectPage.Title }}
+      {{ $currentSidebarSubject = $subject }}
+
+      {{ range $topicPage := $subjectPage.Sections.ByWeight }}
+        {{ if hasPrefix $page.RelPermalink $topicPage.RelPermalink }}
+          {{ $hasFolderTopic = true }}
+          {{ $topic = $topicPage.LinkTitle | default $topicPage.Title }}
+          {{ $currentSidebarTopic = $topic }}
+          {{ $currentTopicSeriesSections = $topicPage.Sections.ByWeight }}
+          {{ $currentTopicPages = partial "posts/utils/topic-pages.html" (dict "topic" $topicPage) }}
+
+          {{ range $seriesPage := $topicPage.Sections.ByWeight }}
+            {{ if hasPrefix $page.RelPermalink $seriesPage.RelPermalink }}
+              {{ $series = $seriesPage.LinkTitle | default $seriesPage.Title }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ if not $hasFolderSubject }}
+    {{ with .Params.subject }}
+      {{ $subject = . }}
+      {{ $currentSidebarSubject = . }}
+    {{ else }}
+      {{ with .Params.categories }}
+        {{ $subject = index . 0 }}
+        {{ $currentSidebarSubject = index . 0 }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ if not $hasFolderTopic }}
+    {{ with .Params.topic }}
+      {{ $topic = . }}
+      {{ $currentSidebarTopic = . }}
+    {{ end }}
+  {{ end }}
+  {{ with .Params.series }}
+    {{ $series = . }}
+  {{ end }}
+
+  {{ $currentSidebarSubjectID = $currentSidebarSubject | urlize }}
+  {{ $currentSidebarTopicID := printf "subject-%s-topic-%s" ($currentSidebarSubject | urlize) ($currentSidebarTopic | urlize) }}
+  {{ $headingPath := slice
+    (dict "tag" "a" "label" "visitor@portfolio" "href" (relURL "/") "class" "nerdy-muted transition-colors hover:text-slate-950 hover:underline dark:hover:text-white")
+    (dict "label" ":")
+    (dict "tag" "a" "label" (printf "~/%s" $section) "href" (relURL (printf "%s/" $section)) "class" "text-accent-cyan transition-colors hover:underline")
+    (dict "label" "/")
+    (dict "label" ($subject | humanize) "class" "text-accent-purple")
+    (dict "label" "/")
+    (dict "tag" "a" "label" $topic "href" (relURL (printf "%s/#%s" $section $currentSidebarTopicID)) "class" "text-accent-amber transition-colors hover:underline")
+  }}
+
+  <div class="nerdy-page-surface nerdy-page-surface--post">
+    <div class="nerdy-ambient-bg"></div>
+    <div class="nerdy-top-glow max-w-3xl"></div>
+
+    <div class="nerdy-container pt-6">
+      {{ partial "posts/components/heading.html" (dict "path" $headingPath "title" .Title "date" .Date "readingTime" .ReadingTime "tags" .Params.tags) }}
+    </div>
+
+    <div class="nerdy-container grid grid-cols-1 items-start gap-8 lg:grid-cols-12" x-data="{ expandedSubject: {{ $currentSidebarSubjectID | jsonify }}, openSubject(id) { this.expandedSubject = this.expandedSubject === id ? '' : id } }">
+      {{ partial "posts/components/sidebar.html" (dict "section" $section "subjects" $subjects "mode" "page" "activeSubjectID" $currentSidebarSubjectID) }}
+
+      <main class="min-w-0 lg:col-span-9">
+        {{ with $series }}
+          {{ partial "posts/components/series-nav.html" (dict "page" $page "series" . "seriesSections" $currentTopicSeriesSections "pages" $currentTopicPages) }}
+        {{ end }}
+
+        <article class="nerdy-prose prose prose-slate max-w-none dark:prose-invert">
+          {{ .Content }}
+        </article>
+
+        {{ partial "posts/components/navigation.html" (dict "page" $page "pages" $sectionPages) }}
+      </main>
+    </div>
+
+    {{ partial "posts/components/toc.html" . }}
+  </div>
+{{ end }}

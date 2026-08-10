@@ -1,0 +1,64 @@
+{{ define "main" }}
+    {{ $section := .Section | default "posts" }}
+    {{ $sectionPage := site.GetPage (printf "/%s" $section) }}
+    {{ $posts := slice }}
+    {{ if $sectionPage }}
+      {{ $posts = partial "posts/utils/weighted-pages.html" (dict "sectionPage" $sectionPage "section" $section) }}
+    {{ else }}
+      {{ $posts = (where site.RegularPages "Section" $section).ByWeight }}
+    {{ end }}
+    {{ $total := len $posts }}
+    {{ $subjects := slice }}
+    {{ with $sectionPage }}
+      {{ $subjects = .Sections.ByWeight }}
+    {{ end }}
+    {{ $seriesSections := slice }}
+    {{ range $subject := $subjects }}
+      {{ range $topic := $subject.Sections.ByWeight }}
+        {{ range $series := $topic.Sections.ByWeight }}
+          {{ $seriesSections = $seriesSections | append $series }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ $headingPath := slice
+      (dict "tag" "a" "label" "visitor@portfolio" "href" (relURL "/") "class" "nerdy-muted transition-colors hover:text-slate-950 hover:underline dark:hover:text-white")
+      (dict "label" ":")
+      (dict "tag" "a" "label" (printf "~/%s" $section) "href" (relURL (printf "%s/" $section)) "class" "text-accent-cyan transition-colors hover:underline")
+      (dict "label" "/" "attrs" "x-show=\"activeTopic\" x-cloak")
+      (dict "label" "" "class" "text-accent-purple" "attrs" "x-show=\"activeTopic\" x-text=\"activeSubjectLabel\" x-cloak")
+      (dict "label" "/" "attrs" "x-show=\"activeTopic\" x-cloak")
+      (dict "tag" "a" "label" "" "class" "text-accent-amber transition-colors hover:underline" "attrs" "x-show=\"activeTopic\" x-bind:href=\"'#' + activeTopic\" x-text=\"activeTopicLabel\" x-cloak")
+    }}
+    <div class="nerdy-page-surface nerdy-page-surface--post">
+      <div class="nerdy-ambient-bg"></div>
+      <div class="nerdy-top-glow"></div>
+
+      <div class="nerdy-container pt-6" x-data="{ expandedSubject: '', activeTopic: '', activeTopicLabel: '', activeSubjectLabel: '', currentPage: 1, init() { const topicID = decodeURIComponent(window.location.hash.replace(/^#/, '')); if (!topicID) return; const topicLink = Array.from(this.$root.querySelectorAll('[data-topic-id]')).find((link) => link.dataset.topicId === topicID); if (!topicLink) return; this.expandedSubject = topicLink.dataset.subjectId || ''; this.activeTopic = topicID; this.activeSubjectLabel = topicLink.dataset.subjectLabel || ''; this.activeTopicLabel = topicLink.dataset.topicLabel || ''; }, openSubject(id) { this.expandedSubject = this.expandedSubject === id ? '' : id }, selectTopic(topicID, subjectID, subjectLabel, topicLabel) { this.expandedSubject = subjectID; this.activeTopic = topicID; this.activeSubjectLabel = subjectLabel; this.activeTopicLabel = topicLabel; this.currentPage = 1 }, showAll() { this.activeTopic = ''; this.activeTopicLabel = ''; this.activeSubjectLabel = ''; this.currentPage = 1 } }">
+        {{ partial "posts/components/heading.html" (dict "path" $headingPath "title" (.Title | default "Logs") "accent" "Index" "description" .Description) }}
+
+        <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+          {{ partial "posts/components/sidebar.html" (dict "section" $section "subjects" $subjects "mode" "section") }}
+
+          <main class="flex flex-col gap-10 lg:col-span-9">
+            <div class="flex flex-col gap-10" x-show="activeTopic" x-cloak>
+              {{ range $subject := $subjects }}
+                {{ $subjectName := $subject.LinkTitle | default $subject.Title }}
+                {{ range $topic := $subject.Sections.ByWeight }}
+                  {{ $topicName := $topic.LinkTitle | default $topic.Title }}
+                  {{ $topicID := printf "subject-%s-topic-%s" ($subjectName | urlize) ($topicName | urlize) }}
+                  {{ $topicPages := partial "posts/utils/topic-pages.html" (dict "topic" $topic) }}
+                  <div class="flex flex-col gap-10" x-show="activeTopic === {{ $topicID | jsonify }}" x-cloak>
+                    {{ partial "posts/index/content.html" (dict "pages" $topicPages "seriesSections" $topic.Sections.ByWeight "tablePath" (printf "~/%s/%s/%s/" $section $subjectName $topicName)) }}
+                  </div>
+                {{ end }}
+              {{ end }}
+            </div>
+
+            <div class="flex flex-col gap-10" x-show="!activeTopic">
+              {{ partial "posts/index/content.html" (dict "pages" $posts "seriesSections" $seriesSections "tablePath" (printf "~/%s/" $section)) }}
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+{{ end }}

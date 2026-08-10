@@ -1,0 +1,12 @@
+baseURL = 'https://raymaekers.xyz'
+languageCode = 'en-us'
+title = 'My Personal Blog'
+
+[module]
+  [[module.imports]]
+    path = 'github.com/hugo-themes/nerdy'
+
+[build]
+  [build.buildStats]
+    enable = true
+

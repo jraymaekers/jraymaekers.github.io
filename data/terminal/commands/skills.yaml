@@ -1,0 +1,48 @@
+name: skills
+label: Skills
+description: My technical stack
+quick: true
+weight: 20
+categories:
+  - key: core_languages
+    items:
+      - JavaScript
+      - TypeScript
+      - Python
+      - HTML/CSS
+  - key: observability
+    items:
+      - Prometheus
+      - Grafana
+      - Splunk
+      - logz.io
+  - key: cloud
+    items:
+      - GCP
+      - AWS
+      - AKS
+  - key: Identity Software
+    items:
+       - Ping Identity
+       - ForgeRock
+  - key: devops_tools
+    items:
+      - Git
+      - Docker
+      - Terraform
+      - Ansible
+  - key: AI
+    items:
+      - OpenAI
+      - Claude Code
+      - OpenCode
+      - LangChain
+      - LLMs
+  - key: Security
+    items:
+      - Red Teaming
+      - IOT/OT Security
+      - Mobile Application Security
+      - Wireless Security
+      - Web Application Security
+      - Reverse Engineering
