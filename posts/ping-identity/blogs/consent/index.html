@@ -203,7 +203,7 @@ TYPE: IDM Custom Endpoint Script
                       └─ Check Existing Consent [ScriptedDecisionNode]
                            ├─ alreadyAccepted ──→ Update Last Login ──→ Success
                            └─ needsConsent
-                                └─ Show Dyna consent content [ScriptedDecisionNode]
+                                └─ Show Dynamic consent content [ScriptedDecisionNode]
                                      ├─ true (Accept)
                                      │    └─ Process and Record Consent [ScriptedDecisionNode]
                                      │         ├─ accept ──→ Update Last Login ──→ Success
@@ -213,29 +213,7 @@ TYPE: IDM Custom Endpoint Script
                                                └─ RetryLimitDecisionNode (retryLimit: 3)
                                                     ├─ Retry ──→ [back to Show Dyna consent content]
                                                     └─ Reject ──→ Access DENIED [User Message] ──→ Failure
-</code></pre><pre tabindex=0><code class=language-mermaid data-lang=mermaid>graph LR
-    Start((Start)) --&gt; PageNode[&#34;Sign In Page&lt;br/&gt;(Username/Password)&#34;]
-    PageNode --&gt; AuthCheck{Credentials Valid?}
-    
-    AuthCheck -- No --&gt; RetryLogic{Retry Limit?}
-    RetryLogic -- Limit Reached --&gt; Lockout[Account Lockout]
-    RetryLogic -- Retry --&gt; PageNode
-    
-    AuthCheck -- Yes --&gt; IncCount[Increment Login Count]
-    IncCount --&gt; IDUser[Identify Existing User]
-    IDUser --&gt; CheckConsent{&#34;Check Consent&#34;}
-    
-    CheckConsent -- alreadyAccepted --&gt; UpdateLogin[Update Last Login]
-    UpdateLogin --&gt; Success((Success))
-    
-    CheckConsent -- needsConsent --&gt; ShowConsent[&#34;Show Dynamic Consent content&#34;]
-    
-    ShowConsent -- Decline --&gt; DeniedPage[Page: Access Denied]
-    DeniedPage --&gt; Failure((Failure))
-    
-    ShowConsent -- Accept --&gt; ProcessConsent[&#34;Process &amp; Record&#34;]
-    ProcessConsent --&gt; UpdateLogin
-</code></pre><p><strong>Notable configuration details from the export:</strong></p><ul><li>Login retry limit: <code>retryLimit: 5</code>. Five attempts before <code>AccountLockoutNode</code> fires.</li><li>Consent decline retry limit: <code>retryLimit: 3</code>. Three declines before hard denial. This is configurable per deployment.</li><li><code>IdentifyExistingUserNode</code>: <code>identityAttribute: "mail"</code>, <code>identifier: "userName"</code>. User types username, node resolves via mail attribute, writes <code>_id</code> UUID to shared state.</li><li><code>Update Last Login</code>: patches <code>custom_lastLogin</code> on <code>managed/user</code> via <code>openidm.patch()</code>. Convergence point for both <code>alreadyAccepted</code> and <code>accept</code> paths.</li></ul><hr><h2 id=the-consent-screen-what-the-user-actually-sees>The Consent Screen: What the User Actually Sees</h2><figure><img src=/posts/ping-identity/blogs/consent/SCR_sample_EndUserConsent.png alt="End-user consent screen showing Terms v1.8"></figure><p>The page header, version, effective date, all five sections, and the disclaimer footer come directly from the <code>content</code> field in <code>policyVersion</code>, rendered verbatim by <code>callbacksBuilder.textOutputCallback</code>. The Accept and Decline buttons are rendered by <code>callbacksBuilder.confirmationCallback</code>. The Ping Identity branding comes from the AIC login theme.</p><hr><h2 id=the-three-am-scripts>The Three AM Scripts</h2><h3 id=script-1-check-existing-consent>Script 1: Check Existing Consent</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-javascript data-lang=javascript><span style=display:flex><span>(<span style=color:#66d9ef>function</span> () {
+</code></pre><p><strong>Notable configuration details:</strong></p><ul><li>Login retry limit: <code>retryLimit: 5</code>. Five attempts before <code>AccountLockoutNode</code> fires.</li><li>Consent decline retry limit: <code>retryLimit: 3</code>. Three declines before hard denial. This is configurable per deployment.</li><li><code>IdentifyExistingUserNode</code>: <code>identityAttribute: "mail"</code>, <code>identifier: "userName"</code>. User types username, node resolves via mail attribute, writes <code>_id</code> UUID to shared state.</li><li><code>Update Last Login</code>: patches <code>custom_lastLogin</code> on <code>managed/user</code> via <code>openidm.patch()</code>. Convergence point for both <code>alreadyAccepted</code> and <code>accept</code> paths.</li></ul><hr><h2 id=the-consent-screen-what-the-user-actually-sees>The Consent Screen: What the User Actually Sees</h2><figure><img src=/posts/ping-identity/blogs/consent/SCR_sample_EndUserConsent.png alt="End-user consent screen showing Terms v1.8"></figure><p>The page header, version, effective date, all five sections, and the disclaimer footer come directly from the <code>content</code> field in <code>policyVersion</code>, rendered verbatim by <code>callbacksBuilder.textOutputCallback</code>. The Accept and Decline buttons are rendered by <code>callbacksBuilder.confirmationCallback</code>. The Ping Identity branding comes from the AIC login theme.</p><hr><h2 id=the-three-am-scripts>The Three AM Scripts</h2><h3 id=script-1-check-existing-consent>Script 1: Check Existing Consent</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-javascript data-lang=javascript><span style=display:flex><span>(<span style=color:#66d9ef>function</span> () {
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>idmClient</span> <span style=color:#f92672>=</span> (<span style=color:#66d9ef>typeof</span> <span style=color:#a6e22e>idm</span> <span style=color:#f92672>!==</span> <span style=color:#e6db74>&#39;undefined&#39;</span>) <span style=color:#f92672>?</span> <span style=color:#a6e22e>idm</span> <span style=color:#f92672>:</span> <span style=color:#a6e22e>openidm</span>;
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>userId</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>nodeState</span>.<span style=color:#a6e22e>get</span>(<span style=color:#e6db74>&#34;_id&#34;</span>);
 </span></span><span style=display:flex><span>    
