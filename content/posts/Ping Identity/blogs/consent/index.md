@@ -328,7 +328,7 @@ Direct withdrawal by record ID. Wire this to a self-service privacy dashboard fo
 ## The AM Journey: `consentLoginBlog`
 
 The journey wires consent into login. Below is the actual canvas from the AIC admin UI (exported 6 August 2026).
-![The Consent Journey image](/images/SCR_sample_ConsentJourney.png)
+{{< figure src="SCR_sample_ConsentJourney.png" alt="The Consent Journey" >}}
 
 
 ### Journey Topology
@@ -394,7 +394,7 @@ graph LR
 
 ## The Consent Screen: What the User Actually Sees
 
-![End-user consent screen showing Terms v1.8](/images/SCR_sample_EndUserConsent.png)
+{{< figure src="SCR_sample_EndUserConsent.png" alt="End-user consent screen showing Terms v1.8" >}}
 
 The page header, version, effective date, all five sections, and the disclaimer footer come directly from the `content` field in `policyVersion`, rendered verbatim by `callbacksBuilder.textOutputCallback`. The Accept and Decline buttons are rendered by `callbacksBuilder.confirmationCallback`. The Ping Identity branding comes from the AIC login theme.
 
